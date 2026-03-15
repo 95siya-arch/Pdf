@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cambridge Pre A1 Starters – Interactive Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sky:#E0F4FF;--ocean:#0EA5E9;--deep:#0369A1;--mint:#DCFCE7;--leaf:#16A34A;
+  --sun:#FEF08A;--amber:#F59E0B;--coral:#FEE2E2;--rose:#EF4444;
+  --lavender:#EDE9FE;--violet:#7C3AED;--peach:#FFF7ED;--orange:#EA580C;
+  --white:#fff;--gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;
+  --gray-400:#94A3B8;--gray-600:#475569;--gray-800:#1E293B;
+  --r:16px;--r-lg:22px;--r-xl:28px;
+  --shadow:0 2px 12px rgba(0,0,0,.08);--shadow-md:0 4px 20px rgba(0,0,0,.12);--shadow-lg:0 8px 32px rgba(0,0,0,.15);
+}
+body{
+  font-family:'Nunito',sans-serif;
+  background:linear-gradient(160deg,#E0F4FF 0%,#F0FDF4 40%,#FEF9EE 100%);
+  min-height:100vh;color:var(--gray-800);overflow-x:hidden;
+}
+
+/* ── HEADER ── */
+.app-header{
+  background:linear-gradient(135deg,#0EA5E9,#7C3AED);
+  padding:0 24px;position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 20px rgba(14,165,233,.35);
+}
+.header-inner{
+  max-width:960px;margin:0 auto;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fredoka One',cursive;font-size:22px;color:#fff;display:flex;align-items:center;gap:8px;letter-spacing:.3px}
+.brand-star{font-size:26px;animation:spin 4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.score-pill{
+  background:rgba(255,255,255,.22);backdrop-filter:blur(8px);
+  color:#fff;padding:7px 18px;border-radius:30px;
+  font-size:15px;font-weight:800;display:flex;align-items:center;gap:6px;
+}
+
+/* ── NAV TABS ── */
+.nav-strip{
+  background:#fff;border-bottom:2px solid var(--gray-200);
+  overflow-x:auto;scrollbar-width:none;
+}
+.nav-strip::-webkit-scrollbar{display:none}
+.nav-inner{
+  max-width:960px;margin:0 auto;
+  display:flex;gap:4px;padding:0 16px;
+}
+.nav-tab{
+  padding:14px 18px;font-size:13px;font-weight:800;color:var(--gray-400);
+  border:none;background:none;cursor:pointer;white-space:nowrap;
+  border-bottom:3px solid transparent;transition:all .2s;font-family:inherit;
+}
+.nav-tab:hover{color:var(--ocean)}
+.nav-tab.active{color:var(--deep);border-bottom-color:var(--ocean)}
+
+/* ── MAIN WRAPPER ── */
+.main{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+
+/* ── SECTION HEADER ── */
+.section-head{
+  display:flex;align-items:flex-start;gap:18px;
+  background:var(--white);border-radius:var(--r-lg);
+  padding:20px 24px;margin-bottom:22px;box-shadow:var(--shadow);
+  border-left:6px solid var(--ocean);
+}
+.sh-icon{font-size:40px;flex-shrink:0;margin-top:2px}
+.sh-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--gray-400);margin-bottom:4px}
+.sh-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--deep);margin-bottom:3px}
+.sh-desc{font-size:14px;color:var(--gray-600);line-height:1.55}
+
+/* ── CARDS ── */
+.card{background:var(--white);border-radius:var(--r-lg);padding:22px 24px;box-shadow:var(--shadow);margin-bottom:18px}
+.card-title{font-size:16px;font-weight:800;color:var(--gray-800);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.part-tag{
+  font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;
+  background:var(--sky);color:var(--deep);letter-spacing:.5px;
+}
+
+/* ── TICK/CROSS (Part 1 R&W) ── */
+.tc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+.tc-item{
+  background:var(--gray-50);border:2px solid var(--gray-200);border-radius:var(--r);
+  padding:16px 12px;text-align:center;transition:all .2s;
+}
+.tc-emoji{font-size:48px;display:block;margin-bottom:8px}
+.tc-sentence{font-size:13px;font-weight:700;color:var(--gray-600);margin-bottom:12px;line-height:1.4}
+.tc-btns{display:flex;gap:8px;justify-content:center}
+.tc-btn{
+  width:44px;height:44px;border-radius:10px;font-size:22px;font-weight:900;
+  border:2px solid var(--gray-200);background:#fff;cursor:pointer;transition:all .2s;
+}
+.tc-btn:hover{transform:scale(1.1)}
+.tc-btn.tick:hover,.tc-btn.tick.chosen{background:#DCFCE7;border-color:var(--leaf);color:var(--leaf)}
+.tc-btn.cross:hover,.tc-btn.cross.chosen{background:#FEE2E2;border-color:var(--rose);color:var(--rose)}
+.tc-btn.correct-flash{animation:flash-green .4s}
+.tc-btn.wrong-flash{animation:flash-red .4s}
+@keyframes flash-green{0%,100%{background:#DCFCE7}50%{background:#86EFAC}}
+@keyframes flash-red{0%,100%{background:#FEE2E2}50%{background:#FCA5A5}}
+.tc-result{font-size:12px;font-weight:800;margin-top:8px;min-height:18px;text-align:center}
+
+/* ── YES/NO (Part 2 R&W) ── */
+.yn-scene{
+  background:linear-gradient(135deg,#E0F4FF,#DCFCE7);
+  border-radius:var(--r);padding:20px;margin-bottom:16px;
+  font-size:15px;line-height:1.8;color:var(--deep);font-weight:700;
+  min-height:100px;display:flex;align-items:center;justify-content:center;
+  text-align:center;
+}
+.yn-scene-emoji{font-size:56px;display:block;margin-bottom:8px}
+.yn-list{display:flex;flex-direction:column;gap:10px}
+.yn-item{
+  display:flex;align-items:center;gap:14px;background:var(--gray-50);
+  border-radius:var(--r);padding:13px 16px;border:2px solid var(--gray-200);
+}
+.yn-q{flex:1;font-size:14px;font-weight:700;color:var(--gray-800)}
+.yn-btns{display:flex;gap:8px}
+.yn-btn{
+  padding:7px 18px;border-radius:20px;font-size:13px;font-weight:800;
+  border:2px solid var(--gray-200);background:#fff;cursor:pointer;transition:all .2s;font-family:inherit;
+}
+.yn-btn.yes-btn:hover,.yn-btn.yes-btn.chosen{background:#DCFCE7;border-color:var(--leaf);color:var(--leaf)}
+.yn-btn.no-btn:hover,.yn-btn.no-btn.chosen{background:#FEE2E2;border-color:var(--rose);color:var(--rose)}
+.yn-btn.correct{background:#DCFCE7;border-color:var(--leaf);color:var(--leaf)}
+.yn-btn.wrong{background:#FEE2E2;border-color:var(--rose);color:var(--rose)}
+
+/* ── WORD BUILDER (Part 3 R&W) ── */
+.wb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.wb-item{
+  background:var(--gray-50);border-radius:var(--r);padding:16px;
+  border:2px solid var(--gray-200);text-align:center;
+}
+.wb-pic{font-size:52px;margin-bottom:10px;display:block}
+.wb-scramble{
+  font-family:'Fredoka One',cursive;font-size:18px;letter-spacing:4px;
+  color:var(--violet);margin-bottom:10px;
+}
+.wb-input{
+  width:100%;padding:9px 14px;border:2.5px solid var(--gray-200);border-radius:10px;
+  font-size:16px;font-weight:800;text-align:center;font-family:inherit;
+  transition:border-color .2s;outline:none;color:var(--gray-800);
+}
+.wb-input:focus{border-color:var(--ocean)}
+.wb-input.ok{border-color:var(--leaf);background:#DCFCE7}
+.wb-input.err{border-color:var(--rose);background:#FEE2E2}
+.wb-hint{font-size:11px;color:var(--gray-400);margin-top:6px;font-weight:700}
+
+/* ── GAP FILL (Part 4 R&W) ── */
+.gf-passage{
+  background:linear-gradient(135deg,#FEF9EE,#FFFBEB);
+  border-radius:var(--r);padding:20px 22px;margin-bottom:16px;
+  font-size:15px;line-height:2.2;color:var(--gray-800);
+  border-left:5px solid var(--amber);
+}
+.gf-blank{
+  display:inline-block;min-width:90px;border-bottom:3px solid var(--ocean);
+  text-align:center;font-weight:900;color:var(--ocean);padding:0 6px;cursor:pointer;
+  transition:all .2s;
+}
+.gf-blank.filled{color:var(--leaf);border-color:var(--leaf)}
+.gf-blank.wrong-b{color:var(--rose);border-color:var(--rose);animation:shake .3s}
+.word-box{
+  display:flex;flex-wrap:wrap;gap:10px;
+  background:var(--lavender);border-radius:var(--r);padding:14px 18px;
+  margin-bottom:14px;
+}
+.word-token{
+  background:#fff;border:2px solid #DDD6FE;border-radius:20px;
+  padding:6px 16px;font-size:14px;font-weight:800;color:var(--violet);
+  cursor:pointer;transition:all .2s;
+}
+.word-token:hover{background:#EDE9FE;border-color:var(--violet)}
+.word-token.used{opacity:.35;pointer-events:none;text-decoration:line-through}
+
+/* ── PICTURE DESCRIPTION (Part 5 R&W) ── */
+.pd-scene{
+  background:linear-gradient(135deg,#FFF7ED,#FEF3C7);
+  border-radius:var(--r);padding:24px;margin-bottom:16px;text-align:center;
+  font-size:64px;line-height:1.3;letter-spacing:4px;
+  border:3px solid #FDE68A;
+}
+.pd-scene-caption{font-size:13px;color:var(--amber);font-weight:800;margin-top:10px;letter-spacing:.5px}
+.pd-questions{display:flex;flex-direction:column;gap:10px}
+.pd-q{
+  background:var(--gray-50);border-radius:var(--r);padding:13px 16px;
+  border:2px solid var(--gray-200);
+}
+.pd-q p{font-size:14px;font-weight:700;color:var(--gray-800);margin-bottom:8px}
+.pd-opts{display:flex;flex-wrap:wrap;gap:8px}
+.pd-opt{
+  background:#fff;border:2px solid var(--gray-200);border-radius:20px;
+  padding:6px 16px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;color:var(--gray-800);
+}
+.pd-opt:hover{border-color:var(--ocean);color:var(--ocean)}
+.pd-opt.correct{background:#DCFCE7;border-color:var(--leaf);color:var(--leaf)}
+.pd-opt.wrong{background:#FEE2E2;border-color:var(--rose);color:var(--rose)}
+
+/* ── LISTENING SECTION ── */
+.listen-card{
+  background:linear-gradient(135deg,#E0F4FF,#EDE9FE);
+  border-radius:var(--r-lg);padding:22px;margin-bottom:16px;
+  border:2px solid #BAE6FD;
+}
+.play-btn{
+  background:linear-gradient(135deg,var(--ocean),var(--deep));color:#fff;
+  padding:13px 28px;border-radius:30px;font-size:15px;font-weight:800;
+  border:none;cursor:pointer;display:flex;align-items:center;gap:8px;
+  margin:0 auto 18px;box-shadow:0 4px 15px rgba(14,165,233,.4);transition:all .2s;
+  font-family:inherit;
+}
+.play-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(14,165,233,.5)}
+.play-btn.playing{background:linear-gradient(135deg,#059669,#047857)}
+.listen-text{
+  font-size:15px;line-height:1.85;color:var(--deep);
+  background:rgba(255,255,255,.7);border-radius:var(--r);padding:16px 20px;
+  font-weight:700;display:none;
+}
+.listen-text.show{display:block}
+
+/* line-drawing task */
+.ldraw-wrap{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.ldraw-names,.ldraw-pics{display:flex;flex-direction:column;gap:12px;flex:1;min-width:130px}
+.ld-name{
+  background:linear-gradient(135deg,var(--ocean),var(--deep));color:#fff;
+  padding:10px 18px;border-radius:30px;font-size:14px;font-weight:800;
+  cursor:pointer;text-align:center;transition:all .2s;
+}
+.ld-name.sel{box-shadow:0 0 0 4px var(--sun);transform:scale(1.04)}
+.ld-name.matched{background:linear-gradient(135deg,var(--leaf),#15803D);cursor:default}
+.ld-pic{
+  background:var(--gray-50);border:2.5px solid var(--gray-200);
+  border-radius:var(--r);padding:10px;font-size:36px;cursor:pointer;
+  text-align:center;transition:all .2s;
+}
+.ld-pic:hover{border-color:var(--ocean)}
+.ld-pic.sel{border-color:var(--violet);box-shadow:0 0 0 3px var(--lavender)}
+.ld-pic.matched{background:#DCFCE7;border-color:var(--leaf);cursor:default}
+.ld-pic .ld-lbl{font-size:11px;color:var(--gray-400);font-weight:700;margin-top:4px}
+
+/* colour task */
+.colour-wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:14px 0}
+.colour-item{
+  width:90px;text-align:center;
+}
+.colour-target{
+  width:80px;height:80px;border-radius:12px;border:3px dashed #ddd;
+  margin:0 auto 6px;transition:all .3s;cursor:pointer;
+}
+.colour-target.coloured{border-style:solid}
+.colour-label{font-size:12px;font-weight:800;color:var(--gray-600)}
+.colour-palette{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+.cp-swatch{
+  width:38px;height:38px;border-radius:8px;cursor:pointer;border:3px solid transparent;
+  transition:all .2s;
+}
+.cp-swatch:hover,.cp-swatch.active{border-color:var(--gray-800);transform:scale(1.15)}
+.cp-selected-label{text-align:center;font-size:13px;font-weight:800;color:var(--gray-600);margin-top:8px}
+
+/* number / name write */
+.nw-strip{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.nw-item{
+  background:var(--sky);border-radius:var(--r);padding:14px 18px;
+  flex:1;min-width:150px;
+}
+.nw-q{font-size:14px;font-weight:800;color:var(--deep);margin-bottom:8px}
+.nw-input{
+  width:100%;padding:9px 14px;border:2.5px solid #BAE6FD;border-radius:10px;
+  font-size:15px;font-weight:800;font-family:inherit;outline:none;background:#fff;
+  transition:border-color .2s;
+}
+.nw-input:focus{border-color:var(--ocean)}
+.nw-input.ok{border-color:var(--leaf);background:#DCFCE7}
+
+/* SPEAKING section */
+.speak-card{
+  background:linear-gradient(135deg,#FFF7ED,#FEF3C7);
+  border-radius:var(--r-lg);padding:22px;border:2px solid #FDE68A;margin-bottom:16px;
+}
+.speak-scene{
+  font-size:70px;text-align:center;padding:20px;
+  background:rgba(255,255,255,.6);border-radius:var(--r);margin-bottom:14px;
+  line-height:1.3;letter-spacing:6px;
+}
+.speak-prompts{display:flex;flex-direction:column;gap:10px}
+.sp-prompt{
+  background:#fff;border-radius:var(--r);padding:14px 18px;
+  border-left:5px solid var(--amber);font-size:14px;color:var(--gray-800);
+  font-weight:700;cursor:pointer;transition:all .2s;
+}
+.sp-prompt:hover{transform:translateX(4px);background:#FFFBEB}
+.sp-prompt.done{background:#DCFCE7;border-left-color:var(--leaf)}
+.sp-tip{
+  background:rgba(255,255,255,.7);border-radius:var(--r);
+  padding:12px 16px;font-size:12px;color:var(--orange);font-weight:700;margin-top:10px;
+}
+
+/* ── RESULT FEEDBACK ── */
+.result-row{
+  display:flex;align-items:center;gap:12px;padding:12px 18px;
+  border-radius:var(--r);font-size:14px;font-weight:800;margin-top:14px;
+}
+.result-row.ok{background:#DCFCE7;color:var(--leaf)}
+.result-row.err{background:#FEE2E2;color:var(--rose)}
+
+/* ── CHECK BTN ── */
+.check-btn{
+  width:100%;padding:14px;background:linear-gradient(135deg,var(--ocean),var(--deep));
+  color:#fff;border:none;border-radius:var(--r);font-size:16px;font-weight:800;
+  cursor:pointer;font-family:inherit;margin-top:18px;
+  box-shadow:0 4px 14px rgba(14,165,233,.35);transition:all .2s;
+}
+.check-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(14,165,233,.45)}
+.check-btn.green{background:linear-gradient(135deg,var(--leaf),#15803D);box-shadow:0 4px 14px rgba(22,163,74,.35)}
+.reset-btn{
+  background:var(--gray-100);color:var(--gray-600);border:none;border-radius:var(--r);
+  padding:10px 22px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:10px;transition:all .2s;
+}
+.reset-btn:hover{background:var(--gray-200)}
+
+/* ── HOME / MENU ── */
+.home-hero{
+  background:linear-gradient(135deg,#0EA5E9,#7C3AED);
+  border-radius:var(--r-xl);padding:36px 30px;text-align:center;color:#fff;
+  margin-bottom:28px;box-shadow:0 8px 32px rgba(14,165,233,.35);position:relative;overflow:hidden;
+}
+.home-hero::after{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:160px;height:160px;background:rgba(255,255,255,.08);border-radius:50%;
+}
+.home-hero h1{font-family:'Fredoka One',cursive;font-size:34px;margin-bottom:6px}
+.home-hero p{font-size:15px;opacity:.9;margin-bottom:20px;line-height:1.55}
+.start-btn{
+  background:#fff;color:var(--deep);padding:13px 32px;border-radius:30px;
+  font-size:16px;font-weight:900;border:none;cursor:pointer;
+  box-shadow:0 4px 15px rgba(0,0,0,.2);font-family:inherit;transition:all .2s;
+}
+.start-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:28px}
+.menu-card{
+  background:var(--white);border-radius:var(--r-lg);padding:22px 16px;
+  text-align:center;cursor:pointer;border:2.5px solid transparent;
+  box-shadow:var(--shadow);transition:all .2s;
+}
+.menu-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.mc-icon{font-size:44px;margin-bottom:10px;display:block}
+.mc-part{font-size:11px;font-weight:800;color:var(--gray-400);letter-spacing:.8px;text-transform:uppercase}
+.mc-title{font-size:15px;font-weight:900;color:var(--gray-800);margin-top:4px}
+.mc-desc{font-size:12px;color:var(--gray-400);margin-top:3px}
+.mc-badge{
+  font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;
+  display:inline-block;margin-top:8px;
+}
+
+.progress-bar{background:var(--gray-200);border-radius:20px;height:8px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--ocean),var(--violet));border-radius:20px;transition:width .5s}
+
+/* ── ANIMATE ── */
+.screen{display:none;animation:fadeUp .3s ease}
+.screen.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.pop{animation:pop .35s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:rgba(15,23,42,.88);color:#fff;padding:11px 24px;border-radius:30px;
+  font-size:14px;font-weight:800;transition:transform .3s;z-index:999;white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── CELEBRATE OVERLAY ── */
+.celebrate{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.45);align-items:center;justify-content:center;z-index:800;padding:20px;
+}
+.celebrate.show{display:flex}
+.cel-box{
+  background:#fff;border-radius:var(--r-xl);padding:38px 30px;text-align:center;
+  box-shadow:0 24px 64px rgba(0,0,0,.3);max-width:340px;width:100%;
+}
+.cel-emoji{font-size:72px;margin-bottom:12px;display:block}
+.cel-title{font-family:'Fredoka One',cursive;font-size:26px;color:var(--deep);margin-bottom:6px}
+.cel-sub{font-size:14px;color:var(--gray-600);margin-bottom:22px;line-height:1.55}
+.cel-btn{
+  background:linear-gradient(135deg,var(--ocean),var(--violet));color:#fff;
+  padding:13px 32px;border-radius:30px;font-size:16px;font-weight:800;border:none;
+  cursor:pointer;font-family:inherit;box-shadow:0 4px 15px rgba(124,58,237,.35);
+}
+.confetti-p{
+  position:fixed;width:10px;height:10px;border-radius:2px;
+  animation:cfall 2.2s ease-in forwards;pointer-events:none;z-index:1000;
+}
+@keyframes cfall{from{transform:translateY(-20px) rotate(0);opacity:1}to{transform:translateY(105vh) rotate(720deg);opacity:0}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:560px){
+  .menu-grid{grid-template-columns:1fr 1fr}
+  .tc-grid{grid-template-columns:1fr 1fr}
+  .wb-grid{grid-template-columns:1fr 1fr}
+  .home-hero h1{font-size:26px}
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand"><span class="brand-star">⭐</span> Cambridge Starters Practice</div>
+    <div class="score-pill">⭐ <span id="score">0</span> pts</div>
+  </div>
+</header>
+
+<div class="nav-strip">
+  <div class="nav-inner">
+    <button class="nav-tab active" onclick="goto('home')">🏠 Home</button>
+    <button class="nav-tab" onclick="goto('rw1')">📖 R&W Part 1</button>
+    <button class="nav-tab" onclick="goto('rw2')">📖 R&W Part 2</button>
+    <button class="nav-tab" onclick="goto('rw3')">📖 R&W Part 3</button>
+    <button class="nav-tab" onclick="goto('rw4')">📖 R&W Part 4</button>
+    <button class="nav-tab" onclick="goto('rw5')">📖 R&W Part 5</button>
+    <button class="nav-tab" onclick="goto('li1')">👂 Listening 1</button>
+    <button class="nav-tab" onclick="goto('li2')">👂 Listening 2</button>
+    <button class="nav-tab" onclick="goto('li3')">👂 Listening 3</button>
+    <button class="nav-tab" onclick="goto('li4')">👂 Listening 4</button>
+    <button class="nav-tab" onclick="goto('speak')">🗣️ Speaking</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ===== HOME ===== -->
+<div id="screen-home" class="screen active">
+  <div class="home-hero">
+    <h1>🌈 Cambridge Pre A1 Starters</h1>
+    <p>Interactive practice for all 3 papers:<br><strong>Reading & Writing · Listening · Speaking</strong></p>
+    <button class="start-btn" onclick="goto('rw1')">▶ Start Practising!</button>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-card" onclick="goto('rw1')" style="border-top:4px solid #0EA5E9">
+      <span class="mc-icon">✅</span>
+      <div class="mc-part">R&W Part 1</div>
+      <div class="mc-title">Tick or Cross</div>
+      <div class="mc-desc">True / False with pictures</div>
+      <span class="mc-badge" style="background:#E0F4FF;color:#0369A1">5 questions</span>
+    </div>
+    <div class="menu-card" onclick="goto('rw2')" style="border-top:4px solid #16A34A">
+      <span class="mc-icon">✔️</span>
+      <div class="mc-part">R&W Part 2</div>
+      <div class="mc-title">Yes or No</div>
+      <div class="mc-desc">Read a scene, answer questions</div>
+      <span class="mc-badge" style="background:#DCFCE7;color:#15803D">5 questions</span>
+    </div>
+    <div class="menu-card" onclick="goto('rw3')" style="border-top:4px solid #7C3AED">
+      <span class="mc-icon">🔤</span>
+      <div class="mc-part">R&W Part 3</div>
+      <div class="mc-title">Write the Word</div>
+      <div class="mc-desc">Look at letters — spell it!</div>
+      <span class="mc-badge" style="background:#EDE9FE;color:#5B21B6">6 words</span>
+    </div>
+    <div class="menu-card" onclick="goto('rw4')" style="border-top:4px solid #F59E0B">
+      <span class="mc-icon">📝</span>
+      <div class="mc-part">R&W Part 4</div>
+      <div class="mc-title">Gap Fill</div>
+      <div class="mc-desc">Choose the right word</div>
+      <span class="mc-badge" style="background:#FEF3C7;color:#B45309">6 gaps</span>
+    </div>
+    <div class="menu-card" onclick="goto('rw5')" style="border-top:4px solid #EA580C">
+      <span class="mc-icon">🖼️</span>
+      <div class="mc-part">R&W Part 5</div>
+      <div class="mc-title">Picture Questions</div>
+      <div class="mc-desc">Describe a picture scene</div>
+      <span class="mc-badge" style="background:#FFF7ED;color:#C2410C">5 questions</span>
+    </div>
+    <div class="menu-card" onclick="goto('li1')" style="border-top:4px solid #0891B2">
+      <span class="mc-icon">🔗</span>
+      <div class="mc-part">Listening Part 1</div>
+      <div class="mc-title">Draw Lines</div>
+      <div class="mc-desc">Match names to pictures</div>
+      <span class="mc-badge" style="background:#CFFAFE;color:#0E7490">5 pairs</span>
+    </div>
+    <div class="menu-card" onclick="goto('li2')" style="border-top:4px solid #DB2777">
+      <span class="mc-icon">🔢</span>
+      <div class="mc-part">Listening Part 2</div>
+      <div class="mc-title">Write Name/Number</div>
+      <div class="mc-desc">Write what you hear</div>
+      <span class="mc-badge" style="background:#FCE7F3;color:#9D174D">5 answers</span>
+    </div>
+    <div class="menu-card" onclick="goto('li3')" style="border-top:4px solid #7C3AED">
+      <span class="mc-icon">🎨</span>
+      <div class="mc-part">Listening Part 3</div>
+      <div class="mc-title">Colour & Draw</div>
+      <div class="mc-desc">Colour the right things</div>
+      <span class="mc-badge" style="background:#EDE9FE;color:#5B21B6">5 items</span>
+    </div>
+    <div class="menu-card" onclick="goto('li4')" style="border-top:4px solid #16A34A">
+      <span class="mc-icon">🔘</span>
+      <div class="mc-part">Listening Part 4</div>
+      <div class="mc-title">Tick the Box</div>
+      <div class="mc-desc">Which picture is correct?</div>
+      <span class="mc-badge" style="background:#DCFCE7;color:#15803D">5 questions</span>
+    </div>
+    <div class="menu-card" onclick="goto('speak')" style="border-top:4px solid #F59E0B">
+      <span class="mc-icon">🗣️</span>
+      <div class="mc-part">Speaking</div>
+      <div class="mc-title">Speak & Describe</div>
+      <div class="mc-desc">All 4 speaking tasks</div>
+      <span class="mc-badge" style="background:#FEF3C7;color:#B45309">4 parts</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Your Progress</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <div style="flex:1;min-width:140px;background:#F0F9FF;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:26px;font-weight:900;color:#0EA5E9" id="prog-score">0</div>
+        <div style="font-size:12px;color:#94A3B8;font-weight:700">Total Points</div>
+      </div>
+      <div style="flex:1;min-width:140px;background:#F0FDF4;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:26px;font-weight:900;color:#16A34A" id="prog-correct">0</div>
+        <div style="font-size:12px;color:#94A3B8;font-weight:700">Correct Answers</div>
+      </div>
+      <div style="flex:1;min-width:140px;background:#FAF5FF;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:26px;font-weight:900;color:#7C3AED" id="prog-done">0/10</div>
+        <div style="font-size:12px;color:#94A3B8;font-weight:700">Sections Done</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== R&W PART 1: TICK / CROSS ===== -->
+<div id="screen-rw1" class="screen">
+  <div class="section-head">
+    <span class="sh-icon">✅</span>
+    <div>
+      <div class="sh-label">Reading & Writing · Part 1</div>
+      <div class="sh-title">Tick (✓) or Cross (✗)?</div>
+      <div class="sh-desc">Look at each picture and read the sentence. Put a ✓ if it is right or a ✗ if it is wrong.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="part-tag">PART 1</span> Look and read. Put a tick or cross.</div>
+    <div class="tc-grid" id="tc-grid"></div>
+    <button class="check-btn" onclick="checkTC()">✅ Check My Answers</button>
+    <button class="reset-btn" onclick="resetTC()">🔄 Try Again</button>
+    <div id="tc-result"></div>
+  </div>
+</div>
+
+<!-- ===== R&W PART 2: YES / NO ===== -->
+<div id="screen-rw2" class="screen">
+  <div class="section-head">
+    <span class="sh-icon">🏠</span>
+    <div>
+      <div class="sh-label">Reading & Writing · Part 2</div>
+      <div class="sh-title">Write YES or NO</div>
+      <div class="sh-desc">Look at the picture. Read the sentences. Write <strong>yes</strong> or <strong>no</strong>.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="part-tag">PART 2</span> Look and read. Write yes or no.</div>
+    <div class="yn-scene">
+      <span class="yn-scene-emoji">🛋️🌺🐱📺🪴</span>
+      <div>A living room with a sofa, a TV, a plant, a cat and a window.</div>
+    </div>
+    <div class="yn-list" id="yn-list"></div>
+    <button class="check-btn" onclick="checkYN()">✅ Check My Answers</button>
+    <button class="reset-btn" onclick="resetYN()">🔄 Try Again</button>
+    <div id="yn-result"></div>
+  </div>
+</div>
+
+<!-- ===== R&W PART 3: WRITE THE WORD ===== -->
+<div id="screen-rw3" class="screen">
+  <div class="section-head">
+    <span class="sh-icon">🔤</span>
+    <div>
+      <div class="sh-label">Reading & Writing · Part 3</div>
+      <div class="sh-title">Write the Word</div>
+      <div class="sh-desc">Look at the picture. Look at the scrambled letters. Write the word correctly.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="part-tag">PART 3</span> Look at the pictures. Write the words.</div>
+    <div class="wb-grid" id="wb-grid"></div>
+    <button class="check-btn" onclick="checkWB()">✅ Check My Answers</button>
+    <button class="reset-btn" onclick="resetWB()">🔄 Try Again</button>
+    <div id="wb-result"></div>
+  </div>
+</div>
+
+<!-- ===== R&W PART 4: GAP FILL ===== -->
+<div id="screen-rw4" class="screen">
+  <div class="section-head">
+    <span class="sh-icon">📝</span>
+    <div>
+      <div class="sh-label">Reading & Writing · Part 4</div>
+      <div class="sh-title">Choose the Right Word</div>
+      <div class="sh-desc">Read the text. Choose a word from the box. Write it in the correct space.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="part-tag">PART 4</span> Read this. Choose a word from the box.</div>
+    <div class="word-box" id="gf-wordbox"></div>
+    <div class="gf-passage" id="gf-passage"></div>
+    <button class="check-btn" onclick="checkGF()">✅ Check My Answers</button>
+    <button class="reset-btn" onclick="resetGF()">🔄 Try Again</button>
+    <div id="gf-result"></div>
+  </div>
+</div>
+
+<!-- ===== R&W PART 5: PICTURE QUESTIONS ===== -->
+<div id="screen-rw5" class="screen">
+  <div class="section-head">
+    <span class="sh-icon">🖼️</span>
+    <div>
+      <div class="sh-label">Reading & Writing · Part 5</div>
+      <div class="sh-title">Look at the Picture</div>
+      <div class="sh-desc">Look carefully at the picture. Read the questions and choose the best answer.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="part-tag">PART 5</span> Look at the picture and answer the questions.</div>
+    <div class="pd-scene">
+      🌳🏫🧒👧📚🎒🚌
+      <div class="pd-scene-caption">Children arriving at school in the morning</div>
+    </div>
+    <div class="pd-questions" id="pd-qs"></div>
+    <button class="check-btn" onclick="checkPD()">✅ Check My Answers</button>
+    <button class="reset-btn" onclick="resetPD()">🔄 Try Again</button>
+    <div id="pd-result"></div>
+  </div>
+</div>
+
+<!-- ===== LISTENING PART 1: DRAW LINES ===== -->
+<div id="screen-li1" class="screen">
+  <div class="section-head">
+    <span class="sh-icon">🔗</span>
+    <div>
+      <div class="sh-label">Listening · Part 1</div>
+      <div class="sh-title">Listen and Draw Lines</div>
+      <div class="sh-desc">Match each name to the correct picture by clicking the name then the picture.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="part-tag">LISTENING 1</span> Listen and draw lines. There is one example.</div>
+    <div class="listen-card">
+      <button class="play-btn" id="li1-play" onclick="playScript('li1')">▶ Play Listening Script</button>
+      <div class="listen-text" id="li1-script">
+        <strong>Script:</strong><br>
+        Adult: <em>Look at the picture. Where is Emma? She's the girl with the long hair and a red dress.</em><br>
+        Child: <em>Oh yes! Emma is near the tree.</em><br><br>
+        Adult: <em>Now you try. Where is Tom? He's the boy with the blue bag.</em><br>
+        Child: <em>Tom is on the bus!</em><br><br>
+        Adult: <em>Good! Now, where is Lucy? She has short hair and she's wearing a yellow hat.</em><br>
+        Child: <em>Lucy is near the school door.</em><br><br>
+        Adult: <em>Can you find Dan? He is holding a big book.</em><br>
+        Child: <em>Dan is next to the teacher.</em><br><br>
+        Adult: <em>And where is Kim? She has a green bag.</em><br>
+        Child: <em>Kim is sitting on the bench.</em>
+      </div>
+    </div>
+    <div class="ldraw-wrap">
+      <div class="ldraw-names" id="ld-names"></div>
+      <div class="ldraw-pics" id="ld-pics"></div>
+    </div>
+    <div id="ld-feedback" style="min-height:20px"></div>
+    <button class="reset-btn" onclick="resetLD()">🔄 Try Again</button>
+  </div>
+</div>
+
+<!-- ===== LISTENING PART 2: WRITE NAME/NUMBER ===== -->
+<div id="screen-li2" class="screen">
+  <div class="section-head">
+    <span class="sh-icon">🔢</span>
+    <div>
+      <div class="sh-label">Listening · Part 2</div>
+      <div class="sh-title">Write a Name or Number</div>
+      <div class="sh-desc">Listen to the conversation. Write the answer — a name or number — on the line.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="part-tag">LISTENING 2</span> Listen and write. There are two examples.</div>
+    <div class="listen-card">
+      <button class="play-btn" id="li2-play" onclick="playScript('li2')">▶ Play Listening Script</button>
+      <div class="listen-text" id="li2-script">
+        <strong>Script:</strong><br>
+        Adult: <em>What is your teacher's name?</em><br>
+        Child: <em>My teacher's name is Miss Green. G-R-E-E-N.</em><br><br>
+        Adult: <em>How old are you?</em><br>
+        Child: <em>I am seven years old.</em><br><br>
+        Adult: <em>What is your best friend's name?</em><br>
+        Child: <em>My best friend's name is Sam. S-A-M.</em><br><br>
+        Adult: <em>How many children are in your class?</em><br>
+        Child: <em>There are twenty children in my class.</em><br><br>
+        Adult: <em>What number is your house?</em><br>
+        Child: <em>My house number is fourteen.</em><br><br>
+        Adult: <em>What is your cat's name?</em><br>
+        Child: <em>My cat's name is Mimi. M-I-M-I.</em>
+      </div>
+    </div>
+    <div class="nw-strip" id="nw-strip"></div>
+    <button class="check-btn" onclick="checkNW()">✅ Check My Answers</button>
+    <button class="reset-btn" onclick="resetNW()">🔄 Try Again</button>
+    <div id="nw-result"></div>
+  </div>
+</div>
+
+<!-- ===== LISTENING PART 3: COLOUR ===== -->
+<div id="screen-li3" class="screen">
+  <div class="section-head">
+    <span class="sh-icon">🎨</span>
+    <div>
+      <div class="sh-label">Listening · Part 3</div>
+      <div class="sh-title">Listen and Colour</div>
+      <div class="sh-desc">Listen to the instructions. Click the item, then click a colour to colour it correctly.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="part-tag">LISTENING 3</span> Listen and colour. There is one example.</div>
+    <div class="listen-card">
+      <button class="play-btn" id="li3-play" onclick="playScript('li3')">▶ Play Listening Script</button>
+      <div class="listen-text" id="li3-script">
+        <strong>Script:</strong><br>
+        Adult: <em>Colour the ball — colour it red.</em><br>
+        Child: <em>Red? OK!</em><br><br>
+        Adult: <em>Now, colour the kite. Make it yellow.</em><br>
+        Child: <em>Yellow. That's nice!</em><br><br>
+        Adult: <em>Can you colour the book? Make it blue.</em><br>
+        Child: <em>The book is blue.</em><br><br>
+        Adult: <em>Colour the tree green.</em><br>
+        Child: <em>Green tree — done!</em><br><br>
+        Adult: <em>And colour the flowers pink, please.</em><br>
+        Child: <em>Pink flowers. Beautiful!</em><br><br>
+        Adult: <em>Last one — colour the bag orange.</em><br>
+        Child: <em>Orange bag. Finished!</em>
+      </div>
+    </div>
+    <div class="cp-selected-label" id="cp-selected-lbl">👆 First, select a colour below:</div>
+    <div class="colour-palette" id="colour-palette"></div>
+    <div class="colour-wrap" id="colour-wrap"></div>
+    <button class="check-btn" onclick="checkColour()">✅ Check My Colours</button>
+    <button class="reset-btn" onclick="resetColour()">🔄 Try Again</button>
+    <div id="colour-result"></div>
+  </div>
+</div>
+
+<!-- ===== LISTENING PART 4: TICK THE BOX ===== -->
+<div id="screen-li4" class="screen">
+  <div class="section-head">
+    <span class="sh-icon">🔘</span>
+    <div>
+      <div class="sh-label">Listening · Part 4</div>
+      <div class="sh-title">Tick the Box</div>
+      <div class="sh-desc">Listen to each question. Choose the right picture and tick the box (A, B, or C).</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="part-tag">LISTENING 4</span> Listen and tick the box. There is one example.</div>
+    <div class="listen-card">
+      <button class="play-btn" id="li4-play" onclick="playScript('li4')">▶ Play Listening Script</button>
+      <div class="listen-text" id="li4-script">
+        <strong>Script:</strong><br>
+        1. <em>What is the weather like today? — It is sunny and hot today.</em><br>
+        2. <em>Which animal does the boy have? — He has a brown dog.</em><br>
+        3. <em>What is the girl eating? — She is eating a sandwich.</em><br>
+        4. <em>Where is the cat? — The cat is under the table.</em><br>
+        5. <em>What color is the girl's bag? — Her bag is green.</em>
+      </div>
+    </div>
+    <div id="li4-qs"></div>
+    <button class="check-btn" onclick="checkLI4()">✅ Check My Answers</button>
+    <button class="reset-btn" onclick="resetLI4()">🔄 Try Again</button>
+    <div id="li4-result"></div>
+  </div>
+</div>
+
+<!-- ===== SPEAKING ===== -->
+<div id="screen-speak" class="screen">
+  <div class="section-head">
+    <span class="sh-icon">🗣️</span>
+    <div>
+      <div class="sh-label">Speaking · All Parts</div>
+      <div class="sh-title">Speaking Tasks</div>
+      <div class="sh-desc">Practice all 4 parts of the Cambridge Pre A1 Starters Speaking test.</div>
+    </div>
+  </div>
+
+  <!-- Part A -->
+  <div class="card">
+    <div class="card-title"><span class="part-tag">PART A</span> Describe the picture 🖼️</div>
+    <div class="speak-card">
+      <div class="speak-scene">🏖️🌊☀️🏄‍♂️🦀🐚🌴</div>
+      <div class="speak-prompts" id="speak-a"></div>
+      <div class="sp-tip">💡 Tip: Use sentences! Don't just say the word — say "There is a..." or "The ___ is ___"</div>
+    </div>
+  </div>
+
+  <!-- Part B -->
+  <div class="card">
+    <div class="card-title"><span class="part-tag">PART B</span> Find the differences 🔍</div>
+    <div class="speak-card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div style="background:rgba(255,255,255,.7);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:11px;font-weight:800;color:#F59E0B;margin-bottom:8px">PICTURE A</div>
+          <div style="font-size:36px;letter-spacing:3px">🐱🛋️🌺🪟</div>
+        </div>
+        <div style="background:rgba(255,255,255,.7);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:11px;font-weight:800;color:#F59E0B;margin-bottom:8px">PICTURE B</div>
+          <div style="font-size:36px;letter-spacing:3px">🐶🛋️🌸🚪</div>
+        </div>
+      </div>
+      <div class="speak-prompts" id="speak-b"></div>
+      <div class="sp-tip">💡 Tip: In Picture A, there is a ___ but in Picture B, there is a ___</div>
+    </div>
+  </div>
+
+  <!-- Part C -->
+  <div class="card">
+    <div class="card-title"><span class="part-tag">PART C</span> Personal questions 🙋</div>
+    <div class="speak-card">
+      <div style="font-size:40px;text-align:center;margin-bottom:12px">👤❓</div>
+      <div class="speak-prompts" id="speak-c"></div>
+      <div class="sp-tip">💡 Tip: Answer in full sentences! Not just "yes" — say "Yes, I like..." or "My name is..."</div>
+    </div>
+  </div>
+
+  <!-- Part D: Find the Object -->
+  <div class="card">
+    <div class="card-title"><span class="part-tag">PART D</span> Point and say 👆</div>
+    <div class="speak-card">
+      <div class="speak-scene" style="font-size:52px;letter-spacing:4px">
+        📚✏️📏🎒🖊️🗂️📌🖍️
+      </div>
+      <div class="speak-prompts" id="speak-d"></div>
+      <div class="sp-tip">💡 Tip: The examiner says "Show me something you write with" — you point and say "This is a pencil!"</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- CELEBRATE -->
+<div class="celebrate" id="celebrate">
+  <div class="cel-box pop">
+    <span class="cel-emoji" id="cel-e">🌟</span>
+    <div class="cel-title" id="cel-t">Well Done!</div>
+    <div class="cel-sub" id="cel-s">Great work!</div>
+    <button class="cel-btn" onclick="closeCel()">🎉 Continue!</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// =============================================
+// GLOBAL STATE
+// =============================================
+let totalScore=0,totalCorrect=0,sectionsDone=0;
+
+function addScore(n){totalScore+=n;totalCorrect+=n;document.getElementById('score').textContent=totalScore;document.getElementById('prog-score').textContent=totalScore;document.getElementById('prog-correct').textContent=totalCorrect;}
+function addSection(){sectionsDone++;document.getElementById('prog-done').textContent=sectionsDone+'/10';}
+
+// =============================================
+// NAVIGATION
+// =============================================
+function goto(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>{
+    const ids=['home','rw1','rw2','rw3','rw4','rw5','li1','li2','li3','li4','speak'];
+    t.classList.toggle('active',ids[i]===name);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// =============================================
+// DATA
+// =============================================
+const TC_DATA=[
+  {e:'🍎',sentence:'This is an apple.',correct:true},
+  {e:'🐘',sentence:'This is a cat.',correct:false},
+  {e:'🚗',sentence:'This is a car.',correct:true},
+  {e:'✈️',sentence:'This is a bus.',correct:false},
+  {e:'🐠',sentence:'These are fish.',correct:true},
+  {e:'🍇',sentence:'These are oranges.',correct:false},
+  {e:'📚',sentence:'These are books.',correct:true},
+  {e:'⭐',sentence:'This is a moon.',correct:false},
+];
+
+const YN_DATA=[
+  {q:'There is a sofa in the room.',a:true},
+  {q:'The cat is on the table.',a:false},
+  {q:'There is a TV in the room.',a:true},
+  {q:'The window is closed.',a:false},
+  {q:'There is a plant in the room.',a:true},
+  {q:'There are two cats.',a:false},
+];
+
+const WB_DATA=[
+  {e:'🐱',word:'cat',scramble:'tac'},
+  {e:'📚',word:'book',scramble:'koob'},
+  {e:'🌳',word:'tree',scramble:'eetr'},
+  {e:'🏠',word:'house',scramble:'ehosu'},
+  {e:'🍎',word:'apple',scramble:'lapep'},
+  {e:'🚌',word:'bus',scramble:'sub'},
+];
+
+const GF_DATA={
+  words:['lives','jungle','big','eats','fast','long'],
+  passage:`The elephant is the <b id="gf-0" class="gf-blank" data-idx="0">___</b> animal in the world. It <b id="gf-1" class="gf-blank" data-idx="1">___</b> in Africa and Asia. It <b id="gf-2" class="gf-blank" data-idx="2">___</b> leaves and grass. It has a very <b id="gf-3" class="gf-blank" data-idx="3">___</b> nose called a trunk. Elephants can run very <b id="gf-4" class="gf-blank" data-idx="4">___</b> when they are scared. A baby elephant lives with its family in the <b id="gf-5" class="gf-blank" data-idx="5">___</b>.`,
+  answers:['big','lives','eats','long','fast','jungle']
+};
+
+const PD_DATA=[
+  {q:'What is the weather like?',opts:['sunny','rainy','cloudy'],a:0},
+  {q:'How many children can you see?',opts:['two','three','five'],a:2},
+  {q:'What are the children carrying?',opts:['toys','bags','books'],a:1},
+  {q:'How do the children go to school?',opts:['by car','by bus','by bike'],a:1},
+  {q:'What is near the school?',opts:['a river','a tree','a park'],a:1},
+];
+
+const LD_DATA=[
+  {name:'Tom',pic:'🧒',desc:'boy with blue bag',match:1},
+  {name:'Lucy',pic:'👧',desc:'girl with yellow hat',match:2},
+  {name:'Dan',pic:'👦',desc:'holding a big book',match:3},
+  {name:'Kim',pic:'🧒‍♀️',desc:'green bag',match:4},
+  {name:'Emma',pic:'👩‍🦰',desc:'long hair, red dress',match:0},
+];
+const LD_PICS=[
+  {e:'👩‍🦰',lbl:'near the tree'},
+  {e:'🧒',lbl:'on the bus'},
+  {e:'👧',lbl:'near the door'},
+  {e:'👦',lbl:'next to teacher'},
+  {e:'🧒‍♀️',lbl:'on the bench'},
+];
+
+const NW_DATA=[
+  {q:"What is your teacher's name?",a:'Miss Green',type:'name'},
+  {q:'How old are you?',a:'7',type:'number'},
+  {q:"What is your best friend's name?",a:'Sam',type:'name'},
+  {q:'How many children are in your class?',a:'20',type:'number'},
+  {q:'What number is your house?',a:'14',type:'number'},
+  {q:"What is your cat's name?",a:'Mimi',type:'name'},
+];
+
+const COLOUR_DATA=[
+  {item:'⚽',label:'ball',correct:'#EF4444',correctName:'red'},
+  {item:'🪁',label:'kite',correct:'#EAB308',correctName:'yellow'},
+  {item:'📚',label:'book',correct:'#3B82F6',correctName:'blue'},
+  {item:'🌳',label:'tree',correct:'#16A34A',correctName:'green'},
+  {item:'🌸',label:'flowers',correct:'#EC4899',correctName:'pink'},
+  {item:'🎒',label:'bag',correct:'#F97316',correctName:'orange'},
+];
+const PALETTE=[
+  {c:'#EF4444',n:'red'},{c:'#3B82F6',n:'blue'},{c:'#EAB308',n:'yellow'},
+  {c:'#16A34A',n:'green'},{c:'#EC4899',n:'pink'},{c:'#F97316',n:'orange'},
+  {c:'#8B5CF6',n:'purple'},{c:'#1E293B',n:'black'},{c:'#f1f5f9',n:'white'},
+];
+let selectedColour=null;
+let colourChoices={};
+
+const LI4_DATA=[
+  {q:'1. What is the weather like today?',opts:['☀️ Sunny','🌧️ Rainy','⛅ Cloudy'],a:0},
+  {q:'2. Which animal does the boy have?',opts:['🐱 Cat','🐶 Brown dog','🐹 Hamster'],a:1},
+  {q:'3. What is the girl eating?',opts:['🍕 Pizza','🍱 Rice','🥪 Sandwich'],a:2},
+  {q:'4. Where is the cat?',opts:['🛋️ On the sofa','🪑 Under the table','🚪 Behind the door'],a:1},
+  {q:'5. What color is the girl\'s bag?',opts:['🔴 Red','🟢 Green','🔵 Blue'],a:1},
+];
+
+const SPEAK_A=[
+  'Describe what you can see: "There is a ___ in the picture."',
+  'What colour is the ___? "The ___ is ___."',
+  'Count something: "There are ___ ___s in the picture."',
+  'Use positions: "The ___ is next to / behind / in front of the ___."',
+];
+const SPEAK_B=[
+  'In Picture A, there is a ___. In Picture B, there is a ___.',
+  'The sofa is the same in both pictures.',
+  'In A, the flower is ___. In B, the flower is ___.',
+  'What is different about the door and the window?',
+];
+const SPEAK_C=[
+  'What is your name?',
+  'How old are you?',
+  'What is your favourite colour?',
+  'Have you got a pet? What is it?',
+  'What do you like doing at school?',
+  'How do you come to school?',
+];
+const SPEAK_D=[
+  'Point to something you write with. Say what it is.',
+  'Point to something you carry your things in.',
+  'Point to something you use to draw a straight line.',
+  'How many pencils can you see?',
+];
+
+// =============================================
+// BUILD UI
+// =============================================
+function buildTC(){
+  const g=document.getElementById('tc-grid');g.innerHTML='';
+  TC_DATA.forEach((item,i)=>{
+    const d=document.createElement('div');d.className='tc-item';
+    d.innerHTML=`<span class="tc-emoji">${item.e}</span>
+      <div class="tc-sentence">${item.sentence}</div>
+      <div class="tc-btns">
+        <button class="tc-btn tick" data-idx="${i}" data-choice="tick" onclick="tcPick(this)">✓</button>
+        <button class="tc-btn cross" data-idx="${i}" data-choice="cross" onclick="tcPick(this)">✗</button>
+      </div>
+      <div class="tc-result" id="tcr-${i}"></div>`;
+    g.appendChild(d);
+  });
+}
+
+function tcPick(btn){
+  const idx=btn.dataset.idx;
+  document.querySelectorAll(`[data-idx="${idx}"]`).forEach(b=>b.classList.remove('chosen'));
+  btn.classList.add('chosen');
+}
+
+function checkTC(){
+  let correct=0;
+  TC_DATA.forEach((item,i)=>{
+    const chosen=document.querySelector(`.tc-btn.chosen[data-idx="${i}"]`);
+    const r=document.getElementById(`tcr-${i}`);
+    if(!chosen){r.textContent='❓';r.style.color='#94A3B8';return;}
+    const isCorrect=(chosen.dataset.choice==='tick'&&item.correct)||(chosen.dataset.choice==='cross'&&!item.correct);
+    if(isCorrect){correct++;r.textContent='✅ Correct!';r.style.color='#16A34A';}
+    else{r.textContent=`❌ Answer: ${item.correct?'✓':'✗'}`;r.style.color='#EF4444';}
+  });
+  const r=document.getElementById('tc-result');
+  r.innerHTML=`<div class="result-row ${correct>=6?'ok':'err'}">You got ${correct}/${TC_DATA.length} correct! ${correct>=6?'🌟 Excellent!':'Keep practising! 💪'}</div>`;
+  addScore(correct);addSection();
+  if(correct===TC_DATA.length)celebrate('🌟','Perfect Score!','All answers correct in Part 1!');
+  else showToast(`${correct}/${TC_DATA.length} correct! +${correct} points`);
+}
+function resetTC(){buildTC();document.getElementById('tc-result').innerHTML='';}
+
+function buildYN(){
+  const l=document.getElementById('yn-list');l.innerHTML='';
+  YN_DATA.forEach((item,i)=>{
+    const d=document.createElement('div');d.className='yn-item';
+    d.innerHTML=`<div class="yn-q">${i+1}. ${item.q}</div>
+      <div class="yn-btns">
+        <button class="yn-btn yes-btn" data-idx="${i}" data-choice="yes" onclick="ynPick(this)">yes</button>
+        <button class="yn-btn no-btn" data-idx="${i}" data-choice="no" onclick="ynPick(this)">no</button>
+      </div>`;
+    l.appendChild(d);
+  });
+}
+function ynPick(btn){
+  const idx=btn.dataset.idx;
+  document.querySelectorAll(`.yn-btn[data-idx="${idx}"]`).forEach(b=>b.classList.remove('chosen'));
+  btn.classList.add('chosen');
+}
+function checkYN(){
+  let correct=0;
+  YN_DATA.forEach((item,i)=>{
+    const chosen=document.querySelector(`.yn-btn.chosen[data-idx="${i}"]`);
+    if(!chosen)return;
+    const isCorrect=(chosen.dataset.choice==='yes'&&item.a)||(chosen.dataset.choice==='no'&&!item.a);
+    if(isCorrect){chosen.classList.add('correct');correct++;}
+    else{chosen.classList.add('wrong');document.querySelectorAll(`.yn-btn[data-idx="${i}"]`).forEach(b=>{if((b.dataset.choice==='yes'&&item.a)||(b.dataset.choice==='no'&&!item.a))b.classList.add('correct')});}
+  });
+  document.getElementById('yn-result').innerHTML=`<div class="result-row ${correct>=4?'ok':'err'}">You got ${correct}/${YN_DATA.length} correct! ${correct>=4?'🌟 Great job!':'Try again! 💪'}</div>`;
+  addScore(correct);addSection();
+  if(correct===YN_DATA.length)celebrate('🎉','Excellent!','All yes/no answers correct!');
+  else showToast(`${correct}/${YN_DATA.length} correct!`);
+}
+function resetYN(){buildYN();document.getElementById('yn-result').innerHTML='';}
+
+function buildWB(){
+  const g=document.getElementById('wb-grid');g.innerHTML='';
+  WB_DATA.forEach((item,i)=>{
+    const d=document.createElement('div');d.className='wb-item';
+    d.innerHTML=`<span class="wb-pic">${item.e}</span>
+      <div class="wb-scramble">${item.scramble.toUpperCase()}</div>
+      <input class="wb-input" id="wb-${i}" placeholder="Write the word..." maxlength="10" oninput="wb_check(this,${i})">
+      <div class="wb-hint" id="wbh-${i}"></div>`;
+    g.appendChild(d);
+  });
+}
+function wb_check(inp,i){
+  inp.classList.remove('ok','err');
+  if(inp.value.toLowerCase()===WB_DATA[i].word){inp.classList.add('ok');document.getElementById(`wbh-${i}`).textContent='✅ Correct!';}
+  else{document.getElementById(`wbh-${i}`).textContent='';}
+}
+function checkWB(){
+  let correct=0;
+  WB_DATA.forEach((item,i)=>{
+    const inp=document.getElementById(`wb-${i}`);
+    const h=document.getElementById(`wbh-${i}`);
+    if(inp.value.toLowerCase()===item.word){correct++;inp.classList.add('ok');h.textContent='✅ Correct!';}
+    else{inp.classList.add('err');h.textContent=`❌ Answer: ${item.word}`;}
+  });
+  document.getElementById('wb-result').innerHTML=`<div class="result-row ${correct>=4?'ok':'err'}">You got ${correct}/${WB_DATA.length} correct! ${correct>=4?'🌟 Well done!':'Keep trying! 💪'}</div>`;
+  addScore(correct);addSection();
+  if(correct===WB_DATA.length)celebrate('🔤','Spelling Champion!','All words spelled correctly!');
+  else showToast(`${correct}/${WB_DATA.length} correct!`);
+}
+function resetWB(){buildWB();document.getElementById('wb-result').innerHTML='';}
+
+let gfAnswers=new Array(6).fill(null);
+function buildGF(){
+  gfAnswers=new Array(6).fill(null);
+  document.getElementById('gf-passage').innerHTML=GF_DATA.passage;
+  const wb=document.getElementById('gf-wordbox');wb.innerHTML='';
+  GF_DATA.words.forEach(w=>{
+    const t=document.createElement('span');t.className='word-token';t.textContent=w;t.dataset.word=w;
+    t.onclick=()=>placeGFWord(w,t);
+    wb.appendChild(t);
+  });
+  document.querySelectorAll('.gf-blank').forEach(b=>{b.textContent='___';b.classList.remove('filled','wrong-b');});
+  document.getElementById('gf-result').innerHTML='';
+}
+let selectedGFWord=null,selectedGFToken=null;
+function placeGFWord(word,token){
+  if(selectedGFToken)selectedGFToken.style.outline='none';
+  selectedGFWord=word;selectedGFToken=token;
+  token.style.outline='3px solid #7C3AED';
+  showToast(`Selected: "${word}" — now click a blank`);
+  document.querySelectorAll('.gf-blank').forEach(b=>{
+    b.onclick=()=>{
+      const idx=parseInt(b.dataset.idx);
+      if(gfAnswers[idx]){
+        document.querySelectorAll('.word-token').forEach(t=>{if(t.dataset.word===gfAnswers[idx])t.classList.remove('used')});
+      }
+      gfAnswers[idx]=selectedGFWord;
+      b.textContent=selectedGFWord;b.classList.add('filled');
+      if(selectedGFToken)selectedGFToken.classList.add('used');
+      if(selectedGFToken)selectedGFToken.style.outline='none';
+      selectedGFWord=null;selectedGFToken=null;
+    };
+  });
+}
+function checkGF(){
+  let correct=0;
+  document.querySelectorAll('.gf-blank').forEach((b,i)=>{
+    b.onclick=null;
+    if(gfAnswers[i]===GF_DATA.answers[i]){b.classList.add('filled');b.classList.remove('wrong-b');correct++;}
+    else{b.classList.add('wrong-b');b.textContent=gfAnswers[i]||'___';}
+  });
+  document.getElementById('gf-result').innerHTML=`<div class="result-row ${correct>=4?'ok':'err'}">You got ${correct}/${GF_DATA.answers.length} correct! ${correct>=4?'🌟 Great reading!':'Revise and try again! 💪'}</div>`;
+  addScore(correct);addSection();
+  if(correct===GF_DATA.answers.length)celebrate('📝','Reading Star!','All gaps filled correctly!');
+  else showToast(`${correct}/${GF_DATA.answers.length} correct!`);
+}
+function resetGF(){buildGF();}
+
+function buildPD(){
+  const q=document.getElementById('pd-qs');q.innerHTML='';
+  PD_DATA.forEach((item,i)=>{
+    const d=document.createElement('div');d.className='pd-q';
+    d.innerHTML=`<p>${i+1}. ${item.q}</p>
+      <div class="pd-opts">${item.opts.map((o,oi)=>`<button class="pd-opt" data-idx="${i}" data-oi="${oi}" onclick="pdPick(this)">${o}</button>`).join('')}</div>`;
+    q.appendChild(d);
+  });
+}
+function pdPick(btn){
+  document.querySelectorAll(`.pd-opt[data-idx="${btn.dataset.idx}"]`).forEach(b=>b.classList.remove('correct','wrong'));
+  btn.classList.add('chosen');
+  const isCorrect=parseInt(btn.dataset.oi)===PD_DATA[btn.dataset.idx].a;
+  btn.classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect)document.querySelectorAll(`.pd-opt[data-idx="${btn.dataset.idx}"]`)[PD_DATA[btn.dataset.idx].a].classList.add('correct');
+}
+function checkPD(){
+  let correct=document.querySelectorAll('.pd-opt.correct').length/2;
+  let answered=0;
+  PD_DATA.forEach((_,i)=>{if(document.querySelector(`.pd-opt.chosen[data-idx="${i}"]`))answered++;});
+  document.getElementById('pd-result').innerHTML=`<div class="result-row ${answered>=3?'ok':'err'}">${answered} questions answered! ${answered>=4?'🌟 Excellent!':'Try all questions! 💪'}</div>`;
+  addSection();showToast(`${answered}/${PD_DATA.length} questions answered!`);
+}
+function resetPD(){buildPD();document.getElementById('pd-result').innerHTML='';}
+
+// LISTENING HELPERS
+function playScript(id){
+  const btn=document.getElementById(`${id}-play`);
+  const scr=document.getElementById(`${id}-script`);
+  scr.classList.toggle('show');
+  btn.classList.toggle('playing',scr.classList.contains('show'));
+  btn.textContent=scr.classList.contains('show')?'⏸ Hide Script':'▶ Play Listening Script';
+}
+
+// LD (line drawing)
+let ldSel=null;
+function buildLD(){
+  ldSel=null;
+  const names=document.getElementById('ld-names'),pics=document.getElementById('ld-pics');
+  names.innerHTML='';pics.innerHTML='';
+  LD_DATA.forEach((item,i)=>{
+    const d=document.createElement('div');d.className='ld-name';d.textContent=item.name;d.dataset.ni=i;
+    d.onclick=()=>{document.querySelectorAll('.ld-name').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');ldSel=i;};
+    names.appendChild(d);
+  });
+  LD_PICS.forEach((item,i)=>{
+    const d=document.createElement('div');d.className='ld-pic';d.dataset.pi=i;
+    d.innerHTML=`<div style="font-size:36px">${item.e}</div><div class="ld-lbl">${item.lbl}</div>`;
+    d.onclick=()=>{
+      if(ldSel===null){showToast('👆 Click a name first!');return;}
+      const ni=ldSel;
+      const correctPic=LD_DATA[ni].match;
+      document.querySelectorAll('.ld-name').forEach(x=>x.classList.remove('sel'));
+      if(i===correctPic){
+        document.querySelectorAll('.ld-name')[ni].classList.add('matched');
+        document.querySelectorAll('.ld-pic')[i].classList.add('matched');
+        showToast(`✅ Correct! ${LD_DATA[ni].name} → ${LD_PICS[i].lbl}`);
+        const matched=document.querySelectorAll('.ld-name.matched').length;
+        if(matched===LD_DATA.length){celebrate('🔗','All Matched!','You connected all the names!');addScore(5);addSection();}
+      } else {
+        showToast(`❌ That's not right — try again!`);
+      }
+      ldSel=null;
+    };
+    pics.appendChild(d);
+  });
+  document.getElementById('ld-feedback').innerHTML='';
+}
+function resetLD(){buildLD();}
+
+// NW
+function buildNW(){
+  const s=document.getElementById('nw-strip');s.innerHTML='';
+  NW_DATA.forEach((item,i)=>{
+    const d=document.createElement('div');d.className='nw-item';
+    d.innerHTML=`<div class="nw-q">${item.q}</div>
+      <input class="nw-input" id="nw-${i}" placeholder="Write your answer..." oninput="nwCheck(this,${i})">`;
+    s.appendChild(d);
+  });
+  document.getElementById('nw-result').innerHTML='';
+}
+function nwCheck(inp,i){
+  inp.classList.remove('ok');
+  if(inp.value.trim().toLowerCase()===NW_DATA[i].a.toLowerCase()){inp.classList.add('ok');}
+}
+function checkNW(){
+  let correct=0;
+  NW_DATA.forEach((item,i)=>{
+    const inp=document.getElementById(`nw-${i}`);
+    if(inp.value.trim().toLowerCase()===item.a.toLowerCase()){inp.classList.add('ok');correct++;}
+    else{inp.style.borderColor='#EF4444';}
+  });
+  document.getElementById('nw-result').innerHTML=`<div class="result-row ${correct>=4?'ok':'err'}">You got ${correct}/${NW_DATA.length} correct! ${correct>=4?'🌟 Great listening!':'Try again! 💪'}</div>`;
+  addScore(correct);addSection();showToast(`${correct}/${NW_DATA.length} correct!`);
+}
+function resetNW(){buildNW();}
+
+// COLOUR
+function buildColour(){
+  selectedColour=null;colourChoices={};
+  const cp=document.getElementById('colour-palette');cp.innerHTML='';
+  PALETTE.forEach(p=>{
+    const s=document.createElement('div');s.className='cp-swatch';s.style.background=p.c;s.title=p.n;
+    s.onclick=()=>{document.querySelectorAll('.cp-swatch').forEach(x=>x.classList.remove('active'));s.classList.add('active');selectedColour=p;document.getElementById('cp-selected-lbl').textContent=`🖌️ Selected: ${p.n} — now click an item to colour it!`;};
+    cp.appendChild(s);
+  });
+  const cw=document.getElementById('colour-wrap');cw.innerHTML='';
+  COLOUR_DATA.forEach((item,i)=>{
+    const d=document.createElement('div');d.className='colour-item';
+    d.innerHTML=`<div class="colour-target" id="ct-${i}" title="${item.label}" onclick="applyColour(${i})">${item.item}</div>
+      <div class="colour-label">${item.label}</div>`;
+    cw.appendChild(d);
+  });
+  document.getElementById('colour-result').innerHTML='';
+  document.getElementById('cp-selected-lbl').textContent='👆 First, select a colour below:';
+  // set emoji inside target
+  COLOUR_DATA.forEach((_,i)=>{
+    const t=document.getElementById(`ct-${i}`);
+    t.style.fontSize='48px';t.style.display='flex';t.style.alignItems='center';t.style.justifyContent='center';
+  });
+}
+function applyColour(i){
+  if(!selectedColour){showToast('👆 Select a colour first!');return;}
+  const t=document.getElementById(`ct-${i}`);
+  t.style.background=selectedColour.c;t.classList.add('coloured');
+  colourChoices[i]=selectedColour;
+  showToast(`🎨 Coloured ${COLOUR_DATA[i].label} ${selectedColour.n}`);
+}
+function checkColour(){
+  let correct=0;
+  COLOUR_DATA.forEach((item,i)=>{
+    const t=document.getElementById(`ct-${i}`);
+    if(colourChoices[i]&&colourChoices[i].c===item.correct){t.style.outline='4px solid #16A34A';correct++;}
+    else{t.style.outline='4px solid #EF4444';t.style.background=item.correct;}
+  });
+  document.getElementById('colour-result').innerHTML=`<div class="result-row ${correct>=4?'ok':'err'}">You coloured ${correct}/${COLOUR_DATA.length} correctly! ${correct>=4?'🌟 Colourful champion!':'Check the script and try again! 💪'}</div>`;
+  addScore(correct);addSection();showToast(`${correct}/${COLOUR_DATA.length} correct colours!`);
+}
+function resetColour(){buildColour();}
+
+// LI4
+function buildLI4(){
+  const c=document.getElementById('li4-qs');c.innerHTML='';
+  LI4_DATA.forEach((item,i)=>{
+    const d=document.createElement('div');d.className='pd-q';
+    d.innerHTML=`<p>${item.q}</p>
+      <div class="pd-opts">${item.opts.map((o,oi)=>`<button class="pd-opt" data-idx="${i}" data-oi="${oi}" onclick="li4Pick(this)">${o}</button>`).join('')}</div>`;
+    c.appendChild(d);
+  });
+  document.getElementById('li4-result').innerHTML='';
+}
+function li4Pick(btn){
+  document.querySelectorAll(`.pd-opt[data-idx="${btn.dataset.idx}"]`).forEach(b=>b.classList.remove('correct','wrong'));
+  const isCorrect=parseInt(btn.dataset.oi)===LI4_DATA[btn.dataset.idx].a;
+  btn.classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect)document.querySelectorAll(`.pd-opt[data-idx="${btn.dataset.idx}"]`)[LI4_DATA[btn.dataset.idx].a].classList.add('correct');
+  showToast(isCorrect?'✅ Correct!':'❌ Not quite!');
+}
+function checkLI4(){
+  let correct=document.querySelectorAll('.pd-opt.correct').length;
+  let answered=document.querySelectorAll('#li4-qs .pd-opt.correct,.pd-opt.wrong').length;
+  document.getElementById('li4-result').innerHTML=`<div class="result-row ${correct>=3?'ok':'err'}">${correct} correct answers! ${correct>=4?'🌟 Brilliant!':'Keep practising! 💪'}</div>`;
+  addScore(correct);addSection();showToast(`${correct} correct!`);
+}
+function resetLI4(){buildLI4();}
+
+// SPEAKING
+function buildSpeak(){
+  function makePrompts(arr,id){
+    const c=document.getElementById(id);c.innerHTML='';
+    arr.forEach(p=>{
+      const d=document.createElement('div');d.className='sp-prompt';
+      d.innerHTML=`🗣️ ${p}`;d.onclick=()=>d.classList.toggle('done');
+      c.appendChild(d);
+    });
+  }
+  makePrompts(SPEAK_A,'speak-a');
+  makePrompts(SPEAK_B,'speak-b');
+  makePrompts(SPEAK_C,'speak-c');
+  makePrompts(SPEAK_D,'speak-d');
+}
+
+// =============================================
+// CELEBRATE & TOAST
+// =============================================
+function celebrate(emoji,title,sub){
+  document.getElementById('cel-e').textContent=emoji;
+  document.getElementById('cel-t').textContent=title;
+  document.getElementById('cel-s').textContent=sub;
+  document.getElementById('celebrate').classList.add('show');
+  confetti();
+}
+function closeCel(){document.getElementById('celebrate').classList.remove('show')}
+function confetti(){
+  const c=['#EF4444','#F59E0B','#EAB308','#16A34A','#0EA5E9','#7C3AED','#EC4899'];
+  for(let i=0;i<50;i++){
+    const d=document.createElement('div');d.className='confetti-p';
+    d.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${c[i%c.length]};animation-delay:${Math.random()*.6}s;animation-duration:${1.8+Math.random()*.8}s`;
+    document.body.appendChild(d);setTimeout(()=>d.remove(),3000);
+  }
+}
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// =============================================
+// INIT
+// =============================================
+buildTC();buildYN();buildWB();buildGF();buildPD();
+buildLD();buildNW();buildColour();buildLI4();buildSpeak();
+</script>
+</body>
+</html>
